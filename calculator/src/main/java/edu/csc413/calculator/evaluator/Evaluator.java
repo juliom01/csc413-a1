@@ -1,10 +1,7 @@
 package edu.csc413.calculator.evaluator;
 
 import edu.csc413.calculator.exceptions.InvalidExpressionException;
-import edu.csc413.calculator.operators.AddOperator;
-import edu.csc413.calculator.operators.DivideOperator;
 import edu.csc413.calculator.operators.Operator;
-import edu.csc413.calculator.operators.SubtractOperator;
 
 import java.util.Stack;
 import java.util.StringTokenizer;

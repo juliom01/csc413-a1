@@ -2,6 +2,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 import edu.csc413.calculator.evaluator.Operand;
+import edu.csc413.calculator.operators.PowerOperator;
+import edu.csc413.calculator.operators.SubtractOperator;
 import org.junit.jupiter.api.Test;
 
 public class OperandTest {
@@ -52,5 +54,41 @@ public class OperandTest {
     @Test
     public void isValid_false_decimal() {
         assertThat(Operand.isValid("1.5"), equalTo(false));
+    }
+
+    static class SubtractOperatorTest {
+
+
+        @Test
+        void precedence() {
+            SubtractOperator subtractOperator = new SubtractOperator();
+            assertThat(subtractOperator.precedence(), equalTo(1) );
+        }
+
+        @Test
+        void execute() {
+            SubtractOperator subtractOperator = new SubtractOperator();
+            Operand op1 = new Operand(5);
+            Operand op2 = new Operand(2);
+
+            assertThat( subtractOperator.execute(op2, op1).getValue(), equalTo(3));
+        }
+    }
+
+    static class PowerOperatorTest {
+
+        @Test
+        void precedence() {
+            PowerOperator powerOperator = new PowerOperator();
+            assertThat(powerOperator.precedence(), equalTo(3) );
+        }
+
+        @Test
+        void execute() {
+            PowerOperator powerOperator = new PowerOperator();
+            Operand op1 = new Operand(2);
+            Operand op2 = new Operand(3);
+            assertThat(powerOperator.execute(op2,op1).getValue(), equalTo(8));
+        }
     }
 }

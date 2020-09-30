@@ -9,9 +9,9 @@ class AddOperatorTest {
 
 
     @Test
-    void precedence() {
+    void precedence()   {
         AddOperator addOperator = new AddOperator();
-        assertThat(addOperator.precedence(), equalTo(1));
+        assertThat(addOperator.precedence(), equalTo(1) );
     }
 
     @Test
@@ -20,6 +20,6 @@ class AddOperatorTest {
         Operand op1 = new Operand(2);
         Operand op2 = new Operand(2);
 
-        assertThat(addOperator.execute(op1, op2).getValue(), equalTo(4));
+        assertThat( addOperator.execute(op1, op2).getValue(), equalTo(4));
     }
 }
