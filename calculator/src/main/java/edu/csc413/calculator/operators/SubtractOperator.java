@@ -1,14 +1,16 @@
 package edu.csc413.calculator.operators;
 
-public class MinusOperator {
+import edu.csc413.calculator.evaluator.Operand;
 
-    int priority() {
-        return 2;
+public class SubtractOperator extends  Operator {
+    @Override
+    public int precedence() {
+        return 1;
     }
 
-    Operand execute(Operand opd1, Operand opd2) {
-        Operand temp = new Operand(opd1.getValue() - opd2.getValue());
-        return temp;
+    @Override
+    public Operand execute(Operand lhs, Operand rhs) {
+        return new Operand(rhs.getValue()-lhs.getValue());
     }
 }
-}
+

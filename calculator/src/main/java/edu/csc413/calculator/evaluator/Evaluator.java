@@ -1,7 +1,12 @@
 package edu.csc413.calculator.evaluator;
 
 import edu.csc413.calculator.exceptions.InvalidExpressionException;
+import edu.csc413.calculator.operators.AddOperator;
+import edu.csc413.calculator.operators.DivideOperator;
+import edu.csc413.calculator.operators.Operator;
+import edu.csc413.calculator.operators.SubtractOperator;
 
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 /** Class containing functionality for evaluating arithmetic expressions. */
@@ -68,11 +73,17 @@ public class Evaluator {
      * @return The integer result of evaluating the arithmetic expression
      * @throws InvalidExpressionException The expression provided is invalid
      */
+
+    // in Case of division and multi we get a wrong answer example 625 *25 /25 -18+30 without ()
     public int evaluateSimpleExpression(String expression) throws InvalidExpressionException {
         // The third argument is true to indicate that the delimiters should be used as tokens, too.
         StringTokenizer expressionTokenizer = new StringTokenizer(expression, DELIMITERS, true);
 
         // TODO: Set up data structures needed for operands and operators.
+        Stack<Operator> delimiters = new Stack<>();
+        Stack<Operand> numeric = new Stack<>();
+        //oprater type is better
+
 
         while (expressionTokenizer.hasMoreTokens()) {
             // Filter out whitespace.
@@ -83,16 +94,56 @@ public class Evaluator {
 
             // Check if the token is an operand, operator, or parentheses.
             if (Operand.isValid(expressionToken)) {
-                // TODO: Implement this.
+                // TODO:
+                // We left with an issue here!
+
+                Operand token_operand= new  Operand(expressionToken);
+                numeric.push(token_operand);
             } else {
-                // TODO: Implement this.
+                Operator token_operator = Operator.create(expressionToken);;
+                if(delimiters.size()==0)
+                {
+                    delimiters.push(token_operator);
+                }
+                else if(token_operator.precedence()<delimiters.peek().precedence()) // here only works when we have more than one opareter
+                {
+                    Operand temp= numeric.pop();
+                    Operand temp2=numeric.pop();
+
+                    Operand temp3=delimiters.pop().execute(temp,temp2);
+                    numeric.push(temp3);
+                    delimiters.push(token_operator);
+                }
+                else  if(token_operator.precedence()>=delimiters.peek().precedence())
+                {
+                    delimiters.push(token_operator);
+                }
+
+                //2*3*3 = 18
+                //3*2+3 =3
+                //3+2*3=9
+
+                // TODO:
             }
         }
 
+        while(delimiters.size()>0)
+        {
+            Operand temp=delimiters.pop().execute(numeric.pop(),numeric.pop());
+            numeric.push(temp);
+        }
+        try {
+            return numeric.pop().getValue();
+        }
+        catch (ArithmeticException e )
+        {
+            return 0;
+
+        }
         // We reach this point when all tokens in the expression string have been processed. At this point, if the
         // algorithm has been implemented correctly, we should expect to have some number of (partially processed)
         // operands and operators in their corresponding stacks.
         // TODO: Implement this.
-        return 0;
+
     }
 }

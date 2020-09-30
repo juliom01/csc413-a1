@@ -1,14 +1,16 @@
 package edu.csc413.calculator.operators;
 
-public class PowerOperator {
+import edu.csc413.calculator.evaluator.Operand;
+import java.lang.Math;
 
-    int priority() {
+public class PowerOperator extends  Operator{
+    @Override
+    public int precedence() {
         return 3;
     }
 
-    Operand execute(Operand opd1, Operand opd2) {
-        Operand temp = new Operand(opd1.getValue() * opd2.getValue());
-        return temp;
+    @Override
+    public Operand execute(Operand lhs, Operand rhs) {
+        return new Operand((int) Math.pow(rhs.getValue(),lhs.getValue()));
     }
-}
 }
